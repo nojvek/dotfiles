@@ -32,3 +32,5 @@ set_prompt() {
 
 export PROMPT_COMMAND=set_prompt
 export CLICOLOR=1
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
