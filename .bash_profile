@@ -1,3 +1,12 @@
+
+### BEGIN PROMPT
+function ps_timer_start {
+  ps_cmd_ts=${ps_cmd_ts:-$SECONDS}
+}
+
+# before every command is run, capture timestamp so we can track elapsed time
+trap ps_timer_start DEBUG
+
 set_prompt() {
   # Capture exit code of last command (this needs to be first)
   local exit_code=$?
@@ -21,16 +30,23 @@ set_prompt() {
     ps_git_branch="\[$color_purple_fg\]($git_branch) \[$reset\]"
   fi
 
+  # tracked elapsed seconds
+  local ps_last_cmd_elapsed=$(($SECONDS - $ps_cmd_ts))
+  ps_last_cmd_elapsed="${ps_last_cmd_elapsed}s"
+  unset ps_cmd_ts
+
   # If exit code of last command is non-zero, prepend this code to the prompt
-  local ps_exit_code="\[$color_green_fg\]✔"
+  local ps_last_cmd_msg="\[$color_green_fg\]${ps_last_cmd_elapsed} ✔\[$reset\]"
   if [[ $exit_code -ne 0 ]]; then
-    ps_exit_code="\[$color_red_fg\]✘"
+    ps_last_cmd_msg="\[$color_red_fg\]${ps_last_cmd_elapsed} ✘\[$reset\]"
   fi
 
-  PS1="\[$color_blue_fg\]\W ${ps_git_branch}${ps_exit_code} \[$reset\]"
+
+  PS1="\[$color_blue_fg\]\W ${ps_git_branch}${ps_last_cmd_msg} "
 }
 
 export PROMPT_COMMAND=set_prompt
 export CLICOLOR=1
 export BASH_SILENCE_DEPRECATION_WARNING=1
+### END PROMPT
 
