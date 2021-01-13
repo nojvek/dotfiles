@@ -41,7 +41,6 @@ set_prompt() {
     ps_last_cmd_msg="\[$color_red_fg\]${ps_last_cmd_elapsed} ✘\[$reset\]"
   fi
 
-
   PS1="\[$color_blue_fg\]\W ${ps_git_branch}${ps_last_cmd_msg} "
 }
 
