@@ -1,3 +1,30 @@
+function_exists() {
+  command -v $1 > /dev/null
+  return $?
+}
+
+# Some shells (such as zsh) do not have a `complete` keyword, so we need
+# to make sure that `complete` exists as a shell built-in before calling it,
+# or alternate shell users will get errors.
+function_exists complete && complete -cf sudo
+
+### BEGIN STRIPE
+source ~/.stripe_profile
+### END STRIPE
+
+### BEGIN RBENV
+export PATH="/Users/nojvek/.rbenv/shims:$PATH"
+export PATH="/Users/nojvek/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+### END RBENV
+
+### BEGIN PASSWORD VAULT
+export PATH="/Users/nojvek/stripe/password-vault/bin:$PATH"
+### END PASSWORD VAULT
+
+### BEGIN SPACE COMMANDER
+export PATH="/Users/nojvek/stripe/space-commander/bin:$PATH"
+### END SPACE COMMANDER
 
 ### BEGIN PROMPT
 function ps_timer_start {
@@ -30,13 +57,23 @@ set_prompt() {
     ps_git_branch="\[$color_purple_fg\]($git_branch) \[$reset\]"
   fi
 
-  # tracked elapsed seconds
+  # Show elapsed duration of last command
   local ps_last_cmd_elapsed=$(($SECONDS - $ps_cmd_ts))
-  ps_last_cmd_elapsed="${ps_last_cmd_elapsed}s"
   unset ps_cmd_ts
+  local elapsed_secs=$((ps_last_cmd_elapsed%60))
+  local elapsed_mins=$((ps_last_cmd_elapsed/60%60))
+  local elapsed_hrs=$((ps_last_cmd_elapsed/3600))
+  local elapsed_msg="${elapsed_secs}s"
+
+  if [[ elapsed_mins -gt 0 ]]; then
+    elapsed_msg="${elapsed_mins}m${elapsed_msg}"
+  fi
+  if [[ elapsed_hrs -gt 0 ]]; then
+    elapsed_msg="${elapsed_hrs}h${elapsed_msg}"
+  fi
 
   # If exit code of last command is non-zero, prepend this code to the prompt
-  local ps_last_cmd_msg="\[$color_green_fg\]${ps_last_cmd_elapsed} ✔\[$reset\]"
+  local ps_last_cmd_msg="\[$color_green_fg\]${elapsed_msg} ✔\[$reset\]"
   if [[ $exit_code -ne 0 ]]; then
     ps_last_cmd_msg="\[$color_red_fg\]${ps_last_cmd_elapsed} ✘\[$reset\]"
   fi
@@ -46,6 +83,4 @@ set_prompt() {
 
 export PROMPT_COMMAND=set_prompt
 export CLICOLOR=1
-export BASH_SILENCE_DEPRECATION_WARNING=1
 ### END PROMPT
-
