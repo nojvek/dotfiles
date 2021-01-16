@@ -1,31 +1,3 @@
-function_exists() {
-  command -v $1 > /dev/null
-  return $?
-}
-
-# Some shells (such as zsh) do not have a `complete` keyword, so we need
-# to make sure that `complete` exists as a shell built-in before calling it,
-# or alternate shell users will get errors.
-function_exists complete && complete -cf sudo
-
-### BEGIN STRIPE
-source ~/.stripe_profile
-### END STRIPE
-
-### BEGIN RBENV
-export PATH="/Users/nojvek/.rbenv/shims:$PATH"
-export PATH="/Users/nojvek/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-### END RBENV
-
-### BEGIN PASSWORD VAULT
-export PATH="/Users/nojvek/stripe/password-vault/bin:$PATH"
-### END PASSWORD VAULT
-
-### BEGIN SPACE COMMANDER
-export PATH="/Users/nojvek/stripe/space-commander/bin:$PATH"
-### END SPACE COMMANDER
-
 ### BEGIN PROMPT
 function ps_timer_start {
   ps_cmd_ts=${ps_cmd_ts:-$SECONDS}
