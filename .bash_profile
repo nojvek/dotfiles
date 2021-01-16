@@ -47,7 +47,7 @@ set_prompt() {
   # If exit code of last command is non-zero, prepend this code to the prompt
   local ps_last_cmd_msg="\[$color_green_fg\]${elapsed_msg} ✔\[$reset\]"
   if [[ $exit_code -ne 0 ]]; then
-    ps_last_cmd_msg="\[$color_red_fg\]${ps_last_cmd_elapsed} ✘\[$reset\]"
+    ps_last_cmd_msg="\[$color_red_fg\]${elapsed_msg} ✘\[$reset\]"
   fi
 
   PS1="\[$color_blue_fg\]\W ${ps_git_branch}${ps_last_cmd_msg} "
