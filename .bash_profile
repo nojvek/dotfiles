@@ -57,4 +57,13 @@ export PROMPT_COMMAND=set_prompt
 export CLICOLOR=1
 export BASH_SILENCE_DEPRECATION_WARNING=1
 
+# aliases #
+alias gco="git checkout"
+alias gcp="git cherry-pick"
+alias gfe="git fetch"
+alias glo="git log"
+alias gpl="git pull"
+alias gps="git push"
+alias gre="git reset"
+
 ### END PROMPT
