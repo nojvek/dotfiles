@@ -56,14 +56,26 @@ set_prompt() {
 export PROMPT_COMMAND=set_prompt
 export CLICOLOR=1
 export BASH_SILENCE_DEPRECATION_WARNING=1
+export PATH="/opt/homebrew/bin/:$PATH"
 
 # aliases #
 alias gco="git checkout"
+alias gcob="git checkout -B"
 alias gcp="git cherry-pick"
 alias gfe="git fetch"
+alias gfeo="git fetch origin"
+alias gfeom="git fetch origin main"
 alias glo="git log"
-alias gpl="git pull"
-alias gps="git push"
+alias gpul="git pull"
+alias gpus="git push"
 alias gre="git reset"
+alias greh="git reset --hard"
+alias grehom="git reset --hard origin/main"
+alias gres="git reset --soft"
 
-### END PROMPT
+alias sl="screen -ls"
+alias sr="screen -r"
+alias ss="screen -S"
+
+###END PROMPT
+
