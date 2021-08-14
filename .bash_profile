@@ -6,7 +6,7 @@ function ps_timer_start {
 # before every command is run, capture timestamp so we can track elapsed time
 trap ps_timer_start DEBUG
 
-set_prompt() {
+function set_prompt {
   # Capture exit code of last command (this needs to be first)
   local exit_code=$?
 
