@@ -1,1 +1,3 @@
-https://linuxize.com/post/bashrc-vs-bash-profile/
+if [ -f ~/.bashrc ]; then
+	. ~/.bashrc
+fi
