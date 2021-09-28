@@ -1,0 +1,7 @@
+[user]
+        name = nojvek
+        email = noj@recurrency.com
+[push]
+        default = current
+[pull]
+        default = current
