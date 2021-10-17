@@ -73,7 +73,7 @@ alias grehom="git reset --hard origin/main"
 alias gres="git reset --soft"
 
 alias sl="screen -ls"
-alias sr="screen -r"
+alias sr="screen -d -r"
 alias ss="screen -S"
 
 ###END PROMPT
