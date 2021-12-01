@@ -5,3 +5,5 @@
         default = current
 [pull]
         default = current
+[core]
+        ignorecase = false
