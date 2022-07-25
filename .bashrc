@@ -1,4 +1,3 @@
-### BEGIN PROMPT
 function ps_timer_start {
   ps_cmd_ts=${ps_cmd_ts:-$SECONDS}
 }
@@ -53,9 +52,16 @@ function set_prompt {
   PS1="\[$color_blue_fg\]\W ${ps_git_branch}${ps_last_cmd_msg} "
 }
 
+# prompt #
 export PROMPT_COMMAND=set_prompt
 export CLICOLOR=1
 export BASH_SILENCE_DEPRECATION_WARNING=1
+
+# history #
+export HISTCONTROL=ignoredups:erasedups  # no duplicate entries
+export HISTSIZE=100000                   # big big history
+export HISTFILESIZE=100000               # big big history
+shopt -s histappend                      # append to history, don't overwrite it
 
 # aliases #
 alias gco="git checkout"
@@ -75,5 +81,3 @@ alias gres="git reset --soft"
 alias sl="screen -ls"
 alias sr="screen -d -r"
 alias ss="screen -S"
-
-###END PROMPT
