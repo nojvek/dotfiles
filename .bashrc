@@ -49,7 +49,15 @@ function set_prompt {
     ps_last_cmd_msg="\[$color_red_fg\]${elapsed_msg} ✘\[$reset\]"
   fi
 
+  # set PS1 (primary prompt string)
   PS1="\[$color_blue_fg\]\W ${ps_git_branch}${ps_last_cmd_msg} "
+
+  # append to history after successful command
+  if [[ $exit_code -eq 0 ]]; then
+    history -a
+  fi
+
+  return $exit_code
 }
 
 # prompt #
