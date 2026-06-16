@@ -71,6 +71,13 @@ export HISTSIZE=100000                   # big big history
 export HISTFILESIZE=100000               # big big history
 shopt -s histappend                      # append to history, don't overwrite it
 
+
+# set screen title if inside screen #
+if [[ -n "${STY:-}" ]]; then
+  screen -X hardstatus alwayslastline
+  screen -X hardstatus string "$STY"
+fi
+
 # aliases #
 alias gco="git checkout"
 alias gcob="git checkout -B"
