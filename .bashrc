@@ -71,30 +71,71 @@ export HISTSIZE=100000                   # big big history
 export HISTFILESIZE=100000               # big big history
 shopt -s histappend                      # append to history, don't overwrite it
 
-
-# set screen title if inside screen #
+# screen naming
 if [[ -n "${STY:-}" ]]; then
   screen -X hardstatus alwayslastline
   screen -X hardstatus string "$STY"
 fi
 
+
+# git commands
+git_default_branch() {
+  local branch=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null)
+  if [[ -n "$branch" ]]; then
+    echo "${branch#origin/}"
+  else
+    echo "Could not determine default branch" >&2
+    return 1
+  fi
+}
+
+gpulom() {
+  local main_branch=$(git_default_branch)
+  git fetch origin "+$main_branch:$main_branch"
+  git merge origin/$main_branch
+}
+
+grehom() {
+  local main_branch=$(git_default_branch)
+  # update local version of default branch to match remote
+  git fetch origin "+$main_branch:$main_branch"
+  git reset --hard "origin/$main_branch"
+}
+
+gdiff () {
+  local main_branch=$(git_default_branch)
+  # show tree of changed files between current and default branch
+  git diff --name-status origin/$main_branch...HEAD \
+  | sed -E 's/^([A-Z][0-9]*)\t(.*)$/\2 [\1]/' \
+  | tree --fromfile --filesfirst
+}
+
+# screen list
+sl() {
+  # sort by name, format: <name>.<id> (<status>)
+  screen -ls |
+    perl -ne '
+      if (/^\s*(?<id>\d+)\.(?<name>\w+)\s+\((?<status>Attached|Detached)\)\s*$/) {
+        my $status = lc($+{status});
+        $status = $status eq "attached" ? " ($status)" : "";
+        push @rows, sprintf("%-20s %s%s\n", $+{name}, $+{id}, $status);
+      }
+      END {
+        print sort @rows;
+      }
+    '
+}
+
 # aliases #
-alias gco="git checkout"
 alias gcob="git checkout -B"
 alias gcp="git cherry-pick"
-alias gfe="git fetch"
 alias gfeo="git fetch origin"
-alias gfeom="git fetch origin main"
-alias gfeod="git fetch origin development"
 alias glo="git log"
 alias gpul="git pull"
 alias gpus="git push"
-alias gre="git reset"
+alias gpusn="git push --no-verify"
 alias greh="git reset --hard"
-alias grehom="git reset --hard origin/main"
-alias grehod="git reset --hard origin/development"
 alias gres="git reset --soft"
 
-alias sl="screen -ls"
 alias sr="screen -d -r"
 alias ss="screen -S"
