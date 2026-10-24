@@ -127,6 +127,7 @@ sl() {
 }
 
 # aliases #
+alias gco="git checkout"
 alias gcob="git checkout -B"
 alias gcp="git cherry-pick"
 alias gfeo="git fetch origin"
